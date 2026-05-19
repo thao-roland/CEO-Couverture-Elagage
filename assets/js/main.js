@@ -1,45 +1,15 @@
-/* [Nom de l'entreprise] — interactions premium */
+/* [Nom de l'entreprise] — interactions */
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-  /* ---------- Custom cursor ---------- */
-  if (finePointer && !reduce) {
-    var dot = document.querySelector(".cursor-dot");
-    var ring = document.querySelector(".cursor-ring");
-    if (dot && ring) {
-      var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-      window.addEventListener("mousemove", function (e) {
-        mx = e.clientX; my = e.clientY;
-        dot.style.transform = "translate(" + mx + "px," + my + "px)";
-      }, { passive: true });
-      (function loop() {
-        rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-        ring.style.transform = "translate(" + rx + "px," + ry + "px)";
-        requestAnimationFrame(loop);
-      })();
-      var hov = "a, button, .nav-toggle, input, textarea, select, [data-cursor]";
-      document.addEventListener("mouseover", function (e) {
-        if (e.target.closest(hov)) ring.classList.add("is-hover");
-      });
-      document.addEventListener("mouseout", function (e) {
-        if (e.target.closest(hov)) ring.classList.remove("is-hover");
-      });
-      window.addEventListener("mousedown", function () { ring.classList.add("is-down"); });
-      window.addEventListener("mouseup", function () { ring.classList.remove("is-down"); });
-    }
-  }
-
-  /* ---------- Header scroll state ---------- */
+  /* ---- Header scroll state ---- */
   var header = document.querySelector(".site-header");
-  function headerState() {
-    if (header) header.classList.toggle("scrolled", window.scrollY > 40);
-  }
+  function headerState() { if (header) header.classList.toggle("scrolled", window.scrollY > 36); }
   window.addEventListener("scroll", headerState, { passive: true });
   headerState();
 
-  /* ---------- Mobile overlay menu ---------- */
+  /* ---- Mobile overlay menu ---- */
   var toggle = document.querySelector(".nav-toggle");
   var overlay = document.querySelector(".nav-overlay");
   if (toggle && overlay) {
@@ -59,7 +29,7 @@
     });
   }
 
-  /* ---------- Split headings into words (use *word* for accent) ---------- */
+  /* ---- Split headings into words (use *word* for accent) ---- */
   document.querySelectorAll("[data-split]").forEach(function (el) {
     var words = el.textContent.trim().split(/\s+/);
     el.innerHTML = words.map(function (w) {
@@ -70,27 +40,27 @@
     el.classList.add("split-done");
   });
 
-  /* ---------- Scroll reveal ---------- */
-  var revealEls = document.querySelectorAll("[data-reveal], .split-done");
+  /* ---- Scroll reveal (slide + fade, curtain, words) ---- */
+  var revealEls = document.querySelectorAll("[data-reveal], .split-done, .shot");
   if ("IntersectionObserver" in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.15, rootMargin: "0px 0px -7% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-in"); });
   }
 
-  /* ---------- Counters ---------- */
+  /* ---- Counters ---- */
   function runCounter(el) {
     var target = parseFloat(el.getAttribute("data-count"));
-    var dur = 1700, t0 = null;
+    var dur = 1800, t0 = null;
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
-      var e = 1 - Math.pow(1 - p, 3);
+      var e = 1 - Math.pow(1 - p, 4);
       el.textContent = Math.round(target * e).toLocaleString("fr-FR");
       if (p < 1) requestAnimationFrame(step);
     }
@@ -104,14 +74,16 @@
       });
     }, { threshold: 0.6 });
     counters.forEach(function (el) { co.observe(el); });
+  } else {
+    counters.forEach(function (el) { el.textContent = parseInt(el.getAttribute("data-count"), 10).toLocaleString("fr-FR"); });
   }
 
-  /* ---------- Parallax ---------- */
+  /* ---- Parallax ---- */
   var pxEls = [].slice.call(document.querySelectorAll("[data-parallax]"));
   if (pxEls.length && !reduce) {
     var ticking = false;
     function parallax() {
-      var vh = innerHeight;
+      var vh = window.innerHeight;
       pxEls.forEach(function (el) {
         var speed = parseFloat(el.getAttribute("data-parallax")) || 0.15;
         var r = el.getBoundingClientRect();
@@ -127,25 +99,12 @@
     parallax();
   }
 
-  /* ---------- Magnetic buttons ---------- */
-  if (finePointer && !reduce) {
-    document.querySelectorAll("[data-magnetic]").forEach(function (el) {
-      el.addEventListener("mousemove", function (e) {
-        var r = el.getBoundingClientRect();
-        var x = e.clientX - r.left - r.width / 2;
-        var y = e.clientY - r.top - r.height / 2;
-        el.style.transform = "translate(" + x * 0.22 + "px," + y * 0.3 + "px)";
-      });
-      el.addEventListener("mouseleave", function () { el.style.transform = ""; });
-    });
-  }
-
-  /* ---------- Marquee: duplicate content for seamless loop ---------- */
+  /* ---- Marquee: duplicate for seamless loop ---- */
   document.querySelectorAll(".marquee-track").forEach(function (track) {
     track.innerHTML += track.innerHTML;
   });
 
-  /* ---------- FAQ ---------- */
+  /* ---- FAQ ---- */
   document.querySelectorAll(".faq-q").forEach(function (q) {
     q.addEventListener("click", function () {
       var item = q.closest(".faq-item");
@@ -156,7 +115,7 @@
     });
   });
 
-  /* ---------- Gallery filter ---------- */
+  /* ---- Gallery filter ---- */
   var filters = document.querySelectorAll("[data-filter]");
   if (filters.length) {
     filters.forEach(function (btn) {
@@ -171,7 +130,7 @@
     });
   }
 
-  /* ---------- Form field focus + submit ---------- */
+  /* ---- Form ---- */
   document.querySelectorAll(".field input, .field select, .field textarea").forEach(function (inp) {
     var field = inp.closest(".field");
     inp.addEventListener("focus", function () { field.classList.add("focus"); });
@@ -190,7 +149,7 @@
     });
   });
 
-  /* ---------- Footer year ---------- */
+  /* ---- Footer year ---- */
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 })();

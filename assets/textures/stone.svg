@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="stn"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" seed="21"/><feColorMatrix type="saturate" values="0"/></filter>
+    <pattern id="stp" width="180" height="120" patternUnits="userSpaceOnUse">
+      <rect width="180" height="120" fill="#ddd4c0"/>
+      <g fill="none" stroke="#b9ad92" stroke-width="2.4">
+        <path d="M0 60 H180 M0 0 H180 M0 120 H180"/>
+        <path d="M52 0 V60 M128 0 V60 M14 60 V120 M96 60 V120 M150 60 V120"/>
+      </g>
+      <g fill="#cfc5ad" opacity="0.7">
+        <rect x="3" y="3" width="46" height="54"/>
+        <rect x="131" y="63" width="46" height="54"/>
+        <rect x="99" y="3" width="26" height="54"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="360" height="360" fill="url(#stp)"/>
+  <rect width="360" height="360" filter="url(#stn)" opacity="0.22" style="mix-blend-mode:overlay"/>
+</svg>

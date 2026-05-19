@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="zb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a4145"/>
+      <stop offset="0.5" stop-color="#474f53"/>
+      <stop offset="1" stop-color="#363c40"/>
+    </linearGradient>
+    <filter id="zn"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.6" numOctaves="2" seed="4"/><feColorMatrix type="saturate" values="0"/></filter>
+    <pattern id="zp" width="84" height="360" patternUnits="userSpaceOnUse">
+      <rect width="84" height="360" fill="url(#zb)"/>
+      <rect x="78" y="0" width="6" height="360" fill="#272c2f"/>
+      <rect x="76" y="0" width="2" height="360" fill="#5a6367"/>
+      <rect x="82" y="0" width="2" height="360" fill="#20252700"/>
+      <rect x="0" y="0" width="2" height="360" fill="#5a6367" opacity="0.7"/>
+    </pattern>
+  </defs>
+  <rect width="360" height="360" fill="url(#zp)"/>
+  <rect width="360" height="360" filter="url(#zn)" opacity="0.2" style="mix-blend-mode:overlay"/>
+</svg>
