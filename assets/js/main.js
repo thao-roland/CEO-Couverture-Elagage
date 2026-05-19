@@ -1,17 +1,24 @@
-/* [Nom de l'entreprise] — interactions */
+/* CEO Couverture et Élagage — interactions */
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---- Header scroll state ---- */
   var header = document.querySelector(".site-header");
-  function headerState() { if (header) header.classList.toggle("scrolled", window.scrollY > 36); }
+  function headerState() { if (header) header.classList.toggle("scrolled", window.scrollY > 30); }
   window.addEventListener("scroll", headerState, { passive: true });
   headerState();
 
   /* ---- Mobile overlay menu ---- */
   var toggle = document.querySelector(".nav-toggle");
   var overlay = document.querySelector(".nav-overlay");
+  function closeMenu() {
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    toggle.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
   if (toggle && overlay) {
     toggle.addEventListener("click", function () {
       var open = overlay.classList.toggle("open");
@@ -20,14 +27,16 @@
       document.body.style.overflow = open ? "hidden" : "";
     });
     overlay.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        overlay.classList.remove("open");
-        toggle.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-        document.body.style.overflow = "";
-      });
+      a.addEventListener("click", closeMenu);
     });
+    window.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
   }
+
+  /* ---- Graceful image fallback (keeps premium gradient if photo fails) ---- */
+  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+    img.addEventListener("error", function () { img.style.opacity = "0"; });
+    if (img.complete && img.naturalWidth === 0) img.style.opacity = "0";
+  });
 
   /* ---- Split headings into words (use *word* for accent) ---- */
   document.querySelectorAll("[data-split]").forEach(function (el) {
@@ -40,14 +49,14 @@
     el.classList.add("split-done");
   });
 
-  /* ---- Scroll reveal (slide + fade, curtain, words) ---- */
-  var revealEls = document.querySelectorAll("[data-reveal], .split-done, .shot");
+  /* ---- Scroll reveal ---- */
+  var revealEls = document.querySelectorAll("[data-reveal], .hero, .hero h1");
   if ("IntersectionObserver" in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -7% 0px" });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-in"); });
@@ -56,12 +65,13 @@
   /* ---- Counters ---- */
   function runCounter(el) {
     var target = parseFloat(el.getAttribute("data-count"));
-    var dur = 1800, t0 = null;
+    var dur = 1700, t0 = null;
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
       var e = 1 - Math.pow(1 - p, 4);
-      el.textContent = Math.round(target * e).toLocaleString("fr-FR");
+      var val = target * e;
+      el.textContent = (target % 1 ? val.toFixed(1) : Math.round(val)).toString().replace(".", ",");
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -75,21 +85,20 @@
     }, { threshold: 0.6 });
     counters.forEach(function (el) { co.observe(el); });
   } else {
-    counters.forEach(function (el) { el.textContent = parseInt(el.getAttribute("data-count"), 10).toLocaleString("fr-FR"); });
+    counters.forEach(function (el) { el.textContent = el.getAttribute("data-count").replace(".", ","); });
   }
 
-  /* ---- Parallax ---- */
+  /* ---- Parallax (subtle) ---- */
   var pxEls = [].slice.call(document.querySelectorAll("[data-parallax]"));
   if (pxEls.length && !reduce) {
     var ticking = false;
     function parallax() {
       var vh = window.innerHeight;
       pxEls.forEach(function (el) {
-        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.15;
+        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.12;
         var r = el.getBoundingClientRect();
         var center = r.top + r.height / 2 - vh / 2;
-        var base = el.classList.contains("px-bg") ? "translate(-50%,-50%) " : "";
-        el.style.transform = base + "translateY(" + (-center * speed) + "px)";
+        el.style.transform = "translate3d(0," + (-center * speed) + "px,0)";
       });
       ticking = false;
     }
@@ -104,7 +113,7 @@
     track.innerHTML += track.innerHTML;
   });
 
-  /* ---- FAQ ---- */
+  /* ---- FAQ accordion ---- */
   document.querySelectorAll(".faq-q").forEach(function (q) {
     q.addEventListener("click", function () {
       var item = q.closest(".faq-item");
@@ -130,7 +139,7 @@
     });
   }
 
-  /* ---- Form ---- */
+  /* ---- Form field focus + submit ---- */
   document.querySelectorAll(".field input, .field select, .field textarea").forEach(function (inp) {
     var field = inp.closest(".field");
     inp.addEventListener("focus", function () { field.classList.add("focus"); });
@@ -142,7 +151,7 @@
       if (!form.checkValidity()) { form.reportValidity(); return; }
       var msg = form.querySelector(".form-msg");
       if (msg) {
-        msg.textContent = "Merci, votre demande a bien été enregistrée. [À CONFIGURER : connecter ce formulaire à votre messagerie ou outil de gestion.]";
+        msg.textContent = "Merci, votre demande a bien été reçue. Notre équipe vous recontacte sous 48 h ouvrées.";
         msg.hidden = false;
       }
       form.reset();
