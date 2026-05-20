@@ -51,15 +51,37 @@
 
   /* ---- Scroll reveal ---- */
   var revealEls = document.querySelectorAll("[data-reveal], .hero, .hero h1");
+  var io = null;
   if ("IntersectionObserver" in window && !reduce) {
-    var io = new IntersectionObserver(function (entries) {
+    io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0.05, rootMargin: "0px 0px -4% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  /* Fallback : balayage initial après layout, au cas où l'IO ne déclenche pas
+     pour les éléments déjà au-dessus de la ligne de flottaison sur grand écran. */
+  function initialReveal() {
+    var vh = window.innerHeight;
+    revealEls.forEach(function (el) {
+      if (el.classList.contains("is-in")) return;
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.95 && r.bottom > 0) {
+        el.classList.add("is-in");
+        if (io) io.unobserve(el);
+      }
+    });
+  }
+  if (!reduce) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(initialReveal);
+      setTimeout(initialReveal, 250);
+    });
+    window.addEventListener("load", initialReveal);
   }
 
   /* ---- Counters ---- */
