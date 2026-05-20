@@ -49,10 +49,10 @@
     el.classList.add("split-done");
   });
 
-  /* ---- Scroll reveal ---- */
+  /* ---- Scroll reveal (toujours actif, animations courtes & accessibles) ---- */
   var revealEls = document.querySelectorAll("[data-reveal], .hero, .hero h1");
   var io = null;
-  if ("IntersectionObserver" in window && !reduce) {
+  if ("IntersectionObserver" in window) {
     io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
@@ -64,7 +64,7 @@
   }
 
   /* Fallback : balayage initial après layout, au cas où l'IO ne déclenche pas
-     pour les éléments déjà au-dessus de la ligne de flottaison sur grand écran. */
+     pour les éléments déjà au-dessus de la ligne de flottaison. */
   function initialReveal() {
     var vh = window.innerHeight;
     revealEls.forEach(function (el) {
@@ -76,13 +76,11 @@
       }
     });
   }
-  if (!reduce) {
-    requestAnimationFrame(function () {
-      requestAnimationFrame(initialReveal);
-      setTimeout(initialReveal, 250);
-    });
-    window.addEventListener("load", initialReveal);
-  }
+  requestAnimationFrame(function () {
+    requestAnimationFrame(initialReveal);
+    setTimeout(initialReveal, 250);
+  });
+  window.addEventListener("load", initialReveal);
 
   /* ---- Counters ---- */
   function runCounter(el) {
