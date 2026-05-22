@@ -159,25 +159,16 @@
     });
   }
 
-  /* ---- Galerie vidéo + lecteur (lightbox YouTube) ---- */
-  function youTubeId(raw) {
-    if (!raw) return null;
-    raw = raw.trim();
-    var m = raw.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
-    if (m) return m[1];
-    if (/^[\w-]{11}$/.test(raw)) return raw;
-    return null;
-  }
-  var vidCards = document.querySelectorAll(".vid-card[data-yt]");
+  /* ---- Galerie vidéo + lecteur (vidéos hébergées) ---- */
+  var vidCards = document.querySelectorAll(".vid-card[data-src]");
   if (vidCards.length) {
     var lightbox = document.getElementById("videoLightbox");
     var lbFrame = lightbox && lightbox.querySelector(".lightbox-frame");
     var lbClose = lightbox && lightbox.querySelector(".lightbox-close");
 
-    function openVideo(id) {
+    function openVideo(src) {
       if (!lightbox) return;
-      lbFrame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
-        '?autoplay=1&rel=0" title="Vidéo de chantier" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+      lbFrame.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>';
       lightbox.classList.add("open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -198,18 +189,15 @@
     });
 
     vidCards.forEach(function (card) {
-      var id = youTubeId(card.getAttribute("data-yt"));
+      var src = card.getAttribute("data-src");
       var thumb = card.querySelector(".vid-thumb");
-      if (id) {
-        if (thumb) { thumb.style.opacity = ""; thumb.src = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg"; }
-        card.addEventListener("click", function () { openVideo(id); });
-        card.setAttribute("role", "button");
-        card.setAttribute("tabindex", "0");
-        card.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openVideo(id); }
-        });
-      } else {
+      var ready = true;
+
+      function markEmpty() {
+        ready = false;
         card.classList.add("is-empty");
+        card.removeAttribute("role");
+        card.removeAttribute("tabindex");
         if (!card.querySelector(".vid-empty-note")) {
           var note = document.createElement("span");
           note.className = "vid-empty-note";
@@ -217,6 +205,20 @@
           card.appendChild(note);
         }
       }
+
+      if (thumb && src) {
+        thumb.addEventListener("error", markEmpty);
+        thumb.src = src + "#t=0.5";
+      } else {
+        markEmpty();
+      }
+
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.addEventListener("click", function () { if (ready) openVideo(src); });
+      card.addEventListener("keydown", function (e) {
+        if (ready && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openVideo(src); }
+      });
     });
   }
 
