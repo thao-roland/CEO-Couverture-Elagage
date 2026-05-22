@@ -594,6 +594,23 @@ h1,h2,h3{font-weight:600;line-height:1.08;letter-spacing:-.035em}
 }
 .config-note b{color:var(--sage)}
 
+/* ---------- Zones d'intervention ---------- */
+.zones-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.zone-col{padding:32px;border-radius:18px;border:1px solid var(--line);background:var(--panel)}
+.zone-col h3{font-size:1.15rem;font-weight:600;margin-bottom:10px}
+.zone-col h3::before{
+  content:"";display:inline-block;width:9px;height:9px;border-radius:50%;
+  background:var(--sage);margin-right:9px;vertical-align:middle;
+}
+.zone-col>p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+.zone-chips{list-style:none;display:flex;flex-wrap:wrap;gap:9px}
+.zone-chips li{
+  font-size:.84rem;padding:7px 13px;border-radius:999px;
+  background:var(--panel-2);border:1px solid var(--line-2);color:var(--silver);
+}
+.zones-foot{margin-top:26px;text-align:center;font-size:.9rem;color:var(--muted)}
+.zones-foot a{color:var(--sage);text-decoration:underline}
+
 /* ---------- Responsive ---------- */
 @media (max-width:1080px){
   .nav-main,.header-phone{display:none}
@@ -608,7 +625,7 @@ h1,h2,h3{font-weight:600;line-height:1.08;letter-spacing:-.035em}
   .hero{padding:130px 0 90px;min-height:auto}
   .hero-meta{gap:26px}
   .bento,.stats,.steps,.quotes,.tiles,.gal-grid,.vid-grid,.contact-grid,.feat-grid,
-  .elig,.about-split,.svc-row,.cta-split{grid-template-columns:1fr}
+  .elig,.about-split,.svc-row,.cta-split,.zones-grid{grid-template-columns:1fr}
   .svc-row{display:flex;flex-direction:column;gap:28px;padding:44px 0}
   .svc-row.flip .svc-visual{order:0}
   .form-grid{grid-template-columns:1fr}
