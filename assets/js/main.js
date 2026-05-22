@@ -263,15 +263,52 @@
     inp.addEventListener("blur", function () { field.classList.remove("focus"); });
   });
   document.querySelectorAll("form[data-quote-form]").forEach(function (form) {
+    var msg = form.querySelector(".form-msg");
+    var btn = form.querySelector("button[type=submit]");
+
+    function show(text, ok) {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.hidden = false;
+      msg.classList.toggle("is-error", !ok);
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      var msg = form.querySelector(".form-msg");
-      if (msg) {
-        msg.textContent = "Merci, votre demande a bien été reçue. Notre équipe vous recontacte sous 48 h ouvrées.";
-        msg.hidden = false;
+
+      var action = form.getAttribute("action") || "";
+      var endpoint = action.replace("formsubmit.co/", "formsubmit.co/ajax/");
+
+      if (!endpoint) {
+        show("Merci, votre demande a bien été reçue. Notre équipe vous recontacte sous 48 h ouvrées.", true);
+        form.reset();
+        return;
       }
-      form.reset();
+
+      var label = btn ? btn.textContent : "";
+      if (btn) { btn.disabled = true; btn.textContent = "Envoi en cours…"; }
+
+      fetch(endpoint, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data && (data.success === "true" || data.success === true)) {
+            show("Merci, votre demande a bien été envoyée. Notre équipe vous recontacte sous 48 h ouvrées.", true);
+            form.reset();
+          } else {
+            show("Votre demande n'a pas pu être envoyée. Merci de nous appeler au 07 46 32 96 34.", false);
+          }
+        })
+        .catch(function () {
+          show("Envoi impossible — vérifiez votre connexion, ou appelez-nous au 07 46 32 96 34.", false);
+        })
+        .finally(function () {
+          if (btn) { btn.disabled = false; btn.textContent = label; }
+        });
     });
   });
 
