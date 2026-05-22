@@ -476,7 +476,8 @@ h1,h2,h3{font-weight:600;line-height:1.08;letter-spacing:-.035em}
 .lightbox-toggle button:hover{color:var(--white)}
 .lightbox-toggle button.current{color:var(--bg);background:var(--sage)}
 .lightbox-frame{display:flex;align-items:center;justify-content:center}
-.lightbox-frame video{
+.lightbox-frame video,
+.lightbox-frame img{
   display:block;max-width:min(880px,92vw);max-height:82vh;width:auto;height:auto;
   border-radius:16px;border:1px solid var(--line-2);background:#000;
 }

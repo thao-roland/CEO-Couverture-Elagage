@@ -159,7 +159,7 @@
     });
   }
 
-  /* ---- Galerie vidéo avant/après + lecteur ---- */
+  /* ---- Galerie réalisations (photo/vidéo, avant/après) + lecteur ---- */
   var vidCards = document.querySelectorAll(".vid-card[data-avant], .vid-card[data-apres]");
   if (vidCards.length) {
     var lightbox = document.getElementById("videoLightbox");
@@ -169,10 +169,14 @@
     var lbBtns = lbToggle ? lbToggle.querySelectorAll("button") : [];
     var current = { avant: "", apres: "" };
 
+    function isImage(src) { return /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(src); }
+
     function playPhase(phase) {
       var src = phase === "avant" ? current.avant : current.apres;
       if (!src) return;
-      lbFrame.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>';
+      lbFrame.innerHTML = isImage(src)
+        ? '<img src="' + src + '" alt="Photo du chantier">'
+        : '<video src="' + src + '" controls autoplay playsinline></video>';
       lbBtns.forEach(function (b) {
         b.classList.toggle("current", b.getAttribute("data-phase") === phase);
       });
@@ -208,7 +212,6 @@
     vidCards.forEach(function (card) {
       var avant = card.getAttribute("data-avant") || "";
       var apres = card.getAttribute("data-apres") || "";
-      var thumb = card.querySelector(".vid-thumb");
       var thumbSrc = apres || avant;
       var ready = !!thumbSrc;
 
@@ -225,9 +228,21 @@
         }
       }
 
-      if (thumb && thumbSrc) {
+      if (thumbSrc) {
+        var thumb;
+        if (isImage(thumbSrc)) {
+          thumb = document.createElement("img");
+          thumb.src = thumbSrc;
+        } else {
+          thumb = document.createElement("video");
+          thumb.muted = true;
+          thumb.playsInline = true;
+          thumb.preload = "metadata";
+          thumb.src = thumbSrc + "#t=0.5";
+        }
+        thumb.className = "vid-thumb";
         thumb.addEventListener("error", markEmpty);
-        thumb.src = thumbSrc + "#t=0.5";
+        card.insertBefore(thumb, card.firstChild);
       } else {
         markEmpty();
       }

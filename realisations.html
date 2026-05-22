@@ -97,63 +97,67 @@
     </div>
 
     <!-- ============================================================
-         GALERIE VIDÉO AVANT / APRÈS — MODE D'EMPLOI
-         Chaque chantier a 2 vidéos : une AVANT et une APRÈS travaux.
-         1. Déposez les fichiers dans le dossier  assets/videos/  en les
-            nommant exactement (un couple par chantier) :
-              chantier-1-avant.mp4   chantier-1-apres.mp4
-              chantier-2-avant.mp4   chantier-2-apres.mp4   … etc.
-            Formats acceptés : .mp4 (recommandé), .webm.
-         2. Conseil : compressez les vidéos du téléphone (visez moins
-            de 15–20 Mo par vidéo) pour que la page reste rapide.
-         3. Pour ajouter/retirer un chantier, dupliquez ou supprimez un
-            bloc <figure class="vid-card"> et adaptez data-avant / data-apres.
-            Si un chantier n'a qu'une seule vidéo, laissez un seul des
-            deux attributs : le bouton « Avant/Après » disparaît tout seul.
-         4. Adaptez le titre (<strong>) et la catégorie (data-cat + <span>).
-            Catégories possibles : toiture, elagage, gouttieres.
-         La vignette (image de la vidéo « après ») et la lecture sont
-         automatiques. Tant qu'un fichier manque : « Vidéo à venir ».
+         GALERIE RÉALISATIONS — MODE D'EMPLOI
+         Déposez les fichiers dans le dossier  assets/videos/
+         Vidéos : .mp4 (recommandé) ou .webm.  Photos : .jpg, .png, .webp.
+
+         A) CHANTIER « AVANT / APRÈS » (un comparatif au clic)
+            Renseignez les DEUX attributs sur le <figure> :
+              data-avant="assets/videos/chantier-1-avant.mp4"
+              data-apres="assets/videos/chantier-1-apres.mp4"
+            « avant » peut être une PHOTO ou une VIDÉO, au choix :
+              data-avant="assets/videos/chantier-3-avant.jpg"   (photo)
+            Gardez la mention <span class="vid-badge">Avant / Après</span>.
+
+         B) VIDÉO SEULE (pas de comparatif)
+            Renseignez UNIQUEMENT data-apres, supprimez data-avant et
+            le <span class="vid-badge">. Le bouton Avant/Après disparaît.
+
+         Pour ajouter/retirer un chantier, dupliquez ou supprimez un
+         bloc <figure class="vid-card">. Adaptez le titre (<strong>) et
+         la catégorie (data-cat + <span>) : toiture, elagage, gouttieres.
+         Conseil : compressez les vidéos du téléphone (< 15–20 Mo pièce).
+         La vignette et la lecture sont automatiques.
+         Tant qu'un fichier manque, le bloc affiche « Vidéo à venir ».
          ============================================================ -->
     <div class="vid-grid">
       <figure class="vid-card" data-cat="toiture" data-avant="assets/videos/chantier-1-avant.mp4" data-apres="assets/videos/chantier-1-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
         <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Réfection de toiture</strong><span>Toiture</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="toiture" data-avant="assets/videos/chantier-2-avant.mp4" data-apres="assets/videos/chantier-2-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-badge">Avant / Après</span>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Couverture en ardoise</strong><span>Toiture</span></figcaption>
-      </figure>
-      <figure class="vid-card" data-cat="elagage" data-avant="assets/videos/chantier-3-avant.mp4" data-apres="assets/videos/chantier-3-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
+      <figure class="vid-card" data-cat="elagage" data-avant="assets/videos/chantier-2-avant.mp4" data-apres="assets/videos/chantier-2-apres.mp4" data-reveal>
         <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Élagage d'un grand arbre</strong><span>Élagage</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="elagage" data-avant="assets/videos/chantier-4-avant.mp4" data-apres="assets/videos/chantier-4-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-badge">Avant / Après</span>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Entretien de propriété</strong><span>Élagage</span></figcaption>
-      </figure>
-      <figure class="vid-card" data-cat="gouttieres" data-avant="assets/videos/chantier-5-avant.mp4" data-apres="assets/videos/chantier-5-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-badge">Avant / Après</span>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Pose de gouttières zinc</strong><span>Gouttières</span></figcaption>
-      </figure>
-      <figure class="vid-card" data-cat="gouttieres" data-avant="assets/videos/chantier-6-avant.mp4" data-apres="assets/videos/chantier-6-apres.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
+      <figure class="vid-card" data-cat="gouttieres" data-avant="assets/videos/chantier-3-avant.jpg" data-apres="assets/videos/chantier-3-apres.mp4" data-reveal>
         <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Remplacement de gouttières</strong><span>Gouttières</span></figcaption>
       </figure>
+      <figure class="vid-card" data-cat="toiture" data-apres="assets/videos/realisation-1.mp4" data-reveal>
+        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <figcaption class="vid-cap"><strong>Couverture en ardoise</strong><span>Toiture</span></figcaption>
+      </figure>
+      <figure class="vid-card" data-cat="toiture" data-apres="assets/videos/realisation-2.mp4" data-reveal>
+        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <figcaption class="vid-cap"><strong>Toiture sur extension</strong><span>Toiture</span></figcaption>
+      </figure>
+      <figure class="vid-card" data-cat="elagage" data-apres="assets/videos/realisation-3.mp4" data-reveal>
+        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <figcaption class="vid-cap"><strong>Abattage sécurisé</strong><span>Élagage</span></figcaption>
+      </figure>
+      <figure class="vid-card" data-cat="elagage" data-apres="assets/videos/realisation-4.mp4" data-reveal>
+        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <figcaption class="vid-cap"><strong>Entretien de propriété</strong><span>Élagage</span></figcaption>
+      </figure>
+      <figure class="vid-card" data-cat="gouttieres" data-apres="assets/videos/realisation-5.mp4" data-reveal>
+        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <figcaption class="vid-cap"><strong>Pose de gouttières zinc</strong><span>Gouttières</span></figcaption>
+      </figure>
     </div>
-    <p style="margin-top:28px;font-size:.86rem;color:var(--faint);text-align:center" data-reveal>Les vidéos seront ajoutées au fil des chantiers. Cliquez sur une vignette, puis basculez entre « Avant » et « Après ».</p>
+    <p style="margin-top:28px;font-size:.86rem;color:var(--faint);text-align:center" data-reveal>Les réalisations sont ajoutées au fil des chantiers. Cliquez sur une vignette pour lancer la lecture.</p>
   </div>
 </section>
 
