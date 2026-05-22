@@ -159,6 +159,67 @@
     });
   }
 
+  /* ---- Galerie vidéo + lecteur (lightbox YouTube) ---- */
+  function youTubeId(raw) {
+    if (!raw) return null;
+    raw = raw.trim();
+    var m = raw.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) return m[1];
+    if (/^[\w-]{11}$/.test(raw)) return raw;
+    return null;
+  }
+  var vidCards = document.querySelectorAll(".vid-card[data-yt]");
+  if (vidCards.length) {
+    var lightbox = document.getElementById("videoLightbox");
+    var lbFrame = lightbox && lightbox.querySelector(".lightbox-frame");
+    var lbClose = lightbox && lightbox.querySelector(".lightbox-close");
+
+    function openVideo(id) {
+      if (!lightbox) return;
+      lbFrame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1&rel=0" title="Vidéo de chantier" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeVideo() {
+      if (!lightbox) return;
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lbFrame.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+    if (lbClose) lbClose.addEventListener("click", closeVideo);
+    if (lightbox) lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeVideo();
+    });
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && lightbox && lightbox.classList.contains("open")) closeVideo();
+    });
+
+    vidCards.forEach(function (card) {
+      var id = youTubeId(card.getAttribute("data-yt"));
+      var thumb = card.querySelector(".vid-thumb");
+      if (id) {
+        if (thumb) { thumb.style.opacity = ""; thumb.src = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg"; }
+        card.addEventListener("click", function () { openVideo(id); });
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openVideo(id); }
+        });
+      } else {
+        card.classList.add("is-empty");
+        if (!card.querySelector(".vid-empty-note")) {
+          var note = document.createElement("span");
+          note.className = "vid-empty-note";
+          note.textContent = "Vidéo à venir";
+          card.appendChild(note);
+        }
+      }
+    });
+  }
+
   /* ---- Form field focus + submit ---- */
   document.querySelectorAll(".field input, .field select, .field textarea").forEach(function (inp) {
     var field = inp.closest(".field");
