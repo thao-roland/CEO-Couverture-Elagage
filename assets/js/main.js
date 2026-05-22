@@ -159,16 +159,30 @@
     });
   }
 
-  /* ---- Galerie vidéo + lecteur (vidéos hébergées) ---- */
-  var vidCards = document.querySelectorAll(".vid-card[data-src]");
+  /* ---- Galerie vidéo avant/après + lecteur ---- */
+  var vidCards = document.querySelectorAll(".vid-card[data-avant], .vid-card[data-apres]");
   if (vidCards.length) {
     var lightbox = document.getElementById("videoLightbox");
     var lbFrame = lightbox && lightbox.querySelector(".lightbox-frame");
     var lbClose = lightbox && lightbox.querySelector(".lightbox-close");
+    var lbToggle = lightbox && lightbox.querySelector(".lightbox-toggle");
+    var lbBtns = lbToggle ? lbToggle.querySelectorAll("button") : [];
+    var current = { avant: "", apres: "" };
 
-    function openVideo(src) {
-      if (!lightbox) return;
+    function playPhase(phase) {
+      var src = phase === "avant" ? current.avant : current.apres;
+      if (!src) return;
       lbFrame.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>';
+      lbBtns.forEach(function (b) {
+        b.classList.toggle("current", b.getAttribute("data-phase") === phase);
+      });
+    }
+    function openVideo(avant, apres) {
+      if (!lightbox) return;
+      current.avant = avant;
+      current.apres = apres;
+      if (lbToggle) lbToggle.hidden = !(avant && apres);
+      playPhase(apres ? "apres" : "avant");
       lightbox.classList.add("open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -180,6 +194,9 @@
       lbFrame.innerHTML = "";
       document.body.style.overflow = "";
     }
+    lbBtns.forEach(function (b) {
+      b.addEventListener("click", function () { playPhase(b.getAttribute("data-phase")); });
+    });
     if (lbClose) lbClose.addEventListener("click", closeVideo);
     if (lightbox) lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) closeVideo();
@@ -189,9 +206,11 @@
     });
 
     vidCards.forEach(function (card) {
-      var src = card.getAttribute("data-src");
+      var avant = card.getAttribute("data-avant") || "";
+      var apres = card.getAttribute("data-apres") || "";
       var thumb = card.querySelector(".vid-thumb");
-      var ready = true;
+      var thumbSrc = apres || avant;
+      var ready = !!thumbSrc;
 
       function markEmpty() {
         ready = false;
@@ -206,18 +225,18 @@
         }
       }
 
-      if (thumb && src) {
+      if (thumb && thumbSrc) {
         thumb.addEventListener("error", markEmpty);
-        thumb.src = src + "#t=0.5";
+        thumb.src = thumbSrc + "#t=0.5";
       } else {
         markEmpty();
       }
 
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
-      card.addEventListener("click", function () { if (ready) openVideo(src); });
+      card.addEventListener("click", function () { if (ready) openVideo(avant, apres); });
       card.addEventListener("keydown", function (e) {
-        if (ready && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openVideo(src); }
+        if (ready && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openVideo(avant, apres); }
       });
     });
   }

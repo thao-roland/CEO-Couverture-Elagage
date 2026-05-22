@@ -97,69 +97,63 @@
     </div>
 
     <!-- ============================================================
-         GALERIE VIDÉO — MODE D'EMPLOI (vidéos hébergées sur le site)
-         1. Déposez les fichiers vidéo dans le dossier  assets/videos/
-            en les nommant exactement :
-              chantier-1.mp4, chantier-2.mp4, … chantier-9.mp4
+         GALERIE VIDÉO AVANT / APRÈS — MODE D'EMPLOI
+         Chaque chantier a 2 vidéos : une AVANT et une APRÈS travaux.
+         1. Déposez les fichiers dans le dossier  assets/videos/  en les
+            nommant exactement (un couple par chantier) :
+              chantier-1-avant.mp4   chantier-1-apres.mp4
+              chantier-2-avant.mp4   chantier-2-apres.mp4   … etc.
             Formats acceptés : .mp4 (recommandé), .webm.
          2. Conseil : compressez les vidéos du téléphone (visez moins
             de 15–20 Mo par vidéo) pour que la page reste rapide.
-         3. Pour ajouter/retirer une vidéo, dupliquez ou supprimez un
-            bloc <figure class="vid-card"> ci-dessous et adaptez
-            l'attribut data-src="assets/videos/chantier-X.mp4".
-         4. Adaptez le titre (<strong>) et la catégorie (data-cat +
-            <span>). Catégories possibles : toiture, elagage, gouttieres.
-         La miniature (1re image) et la lecture se gèrent toutes seules.
-         Tant qu'un fichier est absent, le bloc affiche « Vidéo à venir ».
+         3. Pour ajouter/retirer un chantier, dupliquez ou supprimez un
+            bloc <figure class="vid-card"> et adaptez data-avant / data-apres.
+            Si un chantier n'a qu'une seule vidéo, laissez un seul des
+            deux attributs : le bouton « Avant/Après » disparaît tout seul.
+         4. Adaptez le titre (<strong>) et la catégorie (data-cat + <span>).
+            Catégories possibles : toiture, elagage, gouttieres.
+         La vignette (image de la vidéo « après ») et la lecture sont
+         automatiques. Tant qu'un fichier manque : « Vidéo à venir ».
          ============================================================ -->
     <div class="vid-grid">
-      <figure class="vid-card" data-cat="toiture" data-src="assets/videos/chantier-1.mp4" data-reveal>
+      <figure class="vid-card" data-cat="toiture" data-avant="assets/videos/chantier-1-avant.mp4" data-apres="assets/videos/chantier-1-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Réfection de toiture</strong><span>Toiture</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="toiture" data-src="assets/videos/chantier-2.mp4" data-reveal>
+      <figure class="vid-card" data-cat="toiture" data-avant="assets/videos/chantier-2-avant.mp4" data-apres="assets/videos/chantier-2-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Couverture neuve</strong><span>Toiture</span></figcaption>
+        <figcaption class="vid-cap"><strong>Couverture en ardoise</strong><span>Toiture</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="toiture" data-src="assets/videos/chantier-3.mp4" data-reveal>
+      <figure class="vid-card" data-cat="elagage" data-avant="assets/videos/chantier-3-avant.mp4" data-apres="assets/videos/chantier-3-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Toiture en ardoise</strong><span>Toiture</span></figcaption>
-      </figure>
-      <figure class="vid-card" data-cat="elagage" data-src="assets/videos/chantier-4.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Élagage d'un grand arbre</strong><span>Élagage</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="elagage" data-src="assets/videos/chantier-5.mp4" data-reveal>
+      <figure class="vid-card" data-cat="elagage" data-avant="assets/videos/chantier-4-avant.mp4" data-apres="assets/videos/chantier-4-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Abattage sécurisé</strong><span>Élagage</span></figcaption>
-      </figure>
-      <figure class="vid-card" data-cat="elagage" data-src="assets/videos/chantier-6.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Entretien de propriété</strong><span>Élagage</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="gouttieres" data-src="assets/videos/chantier-7.mp4" data-reveal>
+      <figure class="vid-card" data-cat="gouttieres" data-avant="assets/videos/chantier-5-avant.mp4" data-apres="assets/videos/chantier-5-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Pose de gouttière zinc</strong><span>Gouttières</span></figcaption>
+        <figcaption class="vid-cap"><strong>Pose de gouttières zinc</strong><span>Gouttières</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="gouttieres" data-src="assets/videos/chantier-8.mp4" data-reveal>
+      <figure class="vid-card" data-cat="gouttieres" data-avant="assets/videos/chantier-6-avant.mp4" data-apres="assets/videos/chantier-6-apres.mp4" data-reveal>
         <video class="vid-thumb" muted playsinline preload="metadata"></video>
+        <span class="vid-badge">Avant / Après</span>
         <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         <figcaption class="vid-cap"><strong>Remplacement de gouttières</strong><span>Gouttières</span></figcaption>
       </figure>
-      <figure class="vid-card" data-cat="gouttieres" data-src="assets/videos/chantier-9.mp4" data-reveal>
-        <video class="vid-thumb" muted playsinline preload="metadata"></video>
-        <span class="vid-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-        <figcaption class="vid-cap"><strong>Nettoyage de gouttières</strong><span>Gouttières</span></figcaption>
-      </figure>
     </div>
-    <p style="margin-top:28px;font-size:.86rem;color:var(--faint);text-align:center" data-reveal>Les vidéos seront ajoutées au fil des chantiers. Cliquez sur une vignette pour lancer la lecture.</p>
+    <p style="margin-top:28px;font-size:.86rem;color:var(--faint);text-align:center" data-reveal>Les vidéos seront ajoutées au fil des chantiers. Cliquez sur une vignette, puis basculez entre « Avant » et « Après ».</p>
   </div>
 </section>
 
@@ -235,6 +229,10 @@
 <div class="lightbox" id="videoLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Lecteur vidéo">
   <div class="lightbox-inner">
     <button class="lightbox-close" aria-label="Fermer la vidéo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="lightbox-toggle" role="group" aria-label="Choisir avant ou après">
+      <button type="button" data-phase="avant">Avant</button>
+      <button type="button" data-phase="apres" class="current">Après</button>
+    </div>
     <div class="lightbox-frame"></div>
   </div>
 </div>
